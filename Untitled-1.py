@@ -16,6 +16,7 @@ class Carro: #classe principal
 class CarroUsado(Carro): # Carro Seminovo
     def __init__(self, marca, modelo, ano, preco, km):
         super().__init__(marca, modelo, ano, preco, km)
+        self.km = km
     
     def info_carro(self):
         print(f"{self.marca} {self.modelo} ({self.ano}) - R$ {self.preco} - Km{self.km}")
@@ -27,7 +28,7 @@ class Usuario:
         self.senha = senha
         self.estoque = [] #estoque do usuario
 
-    def add_Carro(self, carro):
+    def add_carro(self, carro):
         self.estoque.append(carro)
 
     def remove_carro(self, index):
@@ -50,7 +51,7 @@ def registrar():
     for u in usuarios:
         if u.email == email:
             print("Email já registrado.\n")
-            return None
+            return novo
         
     novo = Usuario(nome, email, senha)
     usuarios.append(novo)
@@ -66,7 +67,7 @@ def login():
             print(f"Bem-vindo {u.nome}!\n")
             return u
     print("Login inválido.\n")
-    return None
+    return u
 
 # ====================== ADD CARRO E REMOV ===========================
 
@@ -94,19 +95,18 @@ def add_carro(usuario):
 
 def lista_carro(usuario):
     if not usuario.estoque:
-        print("Nenhum carro no estoque. Adicione um carro usando a opção 1 do menu.\n")
-
+        print("Nenhum carro no estoque.\n")
     else:
         print("=== Lista de Carros no Estoque ===")
-        for i, carro in enumerate(estoque):
+        for i, carro in enumerate(usuario.estoque):
             print(f"{i+1}. {carro.marca} {carro.modelo} ({carro.ano}) - R$ {carro.preco:.2f} - {carro.km} km")
         print() 
 
-def remove_carro(usario):
-    if  estoque.estoque:
-        lista_carro(usario)
+def remove_carro(usuario):
+    if  usuario.estoque:
+        lista_carro(usuario)
         escolha = int(input("Número do carro para remover: ")) - 1
-        removido = usario.remove_carro(escolha)
+        removido = usuario.remove_carro(escolha)
 
         if removido:
             print (f"{removido.modelo} removido com sucesso!\n")
